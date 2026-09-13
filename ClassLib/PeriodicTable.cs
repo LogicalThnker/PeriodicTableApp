@@ -16,7 +16,7 @@ namespace PeriodicTableConsoleApp.ClassLib
                     Name = "Hydrogen",
                     Symbol = "H",
                     AtomicNumber = 1,
-                    AtomicMass = 1.008,
+                    StandardAtomicWeight = 1.008,
                     MeltingPoint = 13.99
                 },
                 ["He"] = new Element
@@ -24,7 +24,7 @@ namespace PeriodicTableConsoleApp.ClassLib
                     Name = "Helium",
                     Symbol = "He",
                     AtomicNumber = 2,
-                    AtomicMass = 4.0026
+                    StandardAtomicWeight = 4.0026
                 }
             };
         public static Element Get(string symbol) => elements[symbol];
