@@ -1,4 +1,4 @@
-﻿namespace PeriodicTableConsoleApp
+﻿namespace PeriodicTableConsoleApp.Entry
 {
     public class PeriodicTableEntry
     {
