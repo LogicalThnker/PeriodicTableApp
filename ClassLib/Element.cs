@@ -11,6 +11,6 @@
         // This is in 'Kelvin' not C/F
         // 13.99K = -259.16C or -434.49F
         public double? MeltingPoint { get; init; }
-        public List<Isotope> Isotopes { get; init; } = new();
+        public Dictionary<int, Isotope> Isotopes { get; init; } = new();
     }
 }
