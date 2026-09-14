@@ -11,7 +11,9 @@
                     Symbol = "H",
                     AtomicNumber = 1,
                     StandardAtomicWeight = 1.008,
-                    MeltingPoint = 13.99,
+                    ElementType = ElementTypes.ReactiveNonMetal,
+                    MeltingPoint = 14.01,
+                    BoilingPoint = 20.28,
                     Isotopes = new Dictionary<int, Isotope>
                     {
                         [1] = new Isotope
@@ -44,7 +46,9 @@
                     Name = "Helium",
                     Symbol = "He",
                     AtomicNumber = 2,
-                    StandardAtomicWeight = 4.0026
+                    StandardAtomicWeight = 4.0026,
+                    ElementType = ElementTypes.NobleGas,
+                    BoilingPoint = 4.22
                 }
             };
         public static Element Get(string symbol) => elements[symbol];
