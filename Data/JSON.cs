@@ -24,7 +24,7 @@ namespace PeriodicTableConsoleApp.Data
                     {
                         tempLine = "N/A";
                     }
-                    else if (!string.IsNullOrEmpty(row.Cell[i]))
+                    else
                     {
                         tempLine = row.Cell[i];
                     }
