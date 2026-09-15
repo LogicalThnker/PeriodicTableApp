@@ -2,18 +2,23 @@
 {
     public class Element
     {
-        public required string Name { get; init; }
-        public required string Symbol { get; init; }
-        public required string ElementType { get; init; }
         public required int AtomicNumber { get; init; }
-        public double? StandardAtomicWeight { get; init; }
-        public int? RepresentativeMassNumber { get; init; }
-
-        // This is in 'Kelvin' not C/F
-        // 13.99K = -259.16C or -434.49F
+        public required string Symbol { get; init; }
+        public required string Name { get; init; }
+        public required double AtomicMass { get; init; }
+        public string? CPKHexColor { get; init; }
+        public string? ElectronConfiguration { get; init; }
+        public double? Electronegativity { get; init; }
+        public double? AtomicRadius { get; init; }
+        public double? IonizationEnergy { get; init; }
+        public double? ElectronAffinity { get; init; }
+        public int[]? OxidationStates { get; init; }
+        public string? StandardState { get; init; }
         public double? MeltingPoint { get; init; }
         public double? BoilingPoint { get; init; }
-        public Dictionary<int, Isotope> Isotopes { get; init; } = new();
+        public double? Density { get; init; }
+        public string? GroupBlock { get; init; }//ElementType
+        public int? YearDiscovered { get; init; }
     }
     public class ElementTypes
     {
