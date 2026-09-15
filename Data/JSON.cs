@@ -14,13 +14,21 @@ namespace PeriodicTableConsoleApp.Data
         }
         public void OutputAllData()
         {
+            string tempLine = "";
             foreach(PubChemRow row in Data.Table.Row)
             {
-                for(int i = 0; i < row.Cell.Count; i++)
+                for (int i = 0; i < row.Cell.Count; i++)
                 {
                     string column = Data.Table.Columns.Column[i];
-                    string value = row.Cell[i];
-                    Console.WriteLine(column + " : " + row.Cell[i]);
+                    if (string.IsNullOrEmpty(row.Cell[i]))
+                    {
+                        tempLine = "N/A";
+                    }
+                    else if (!string.IsNullOrEmpty(row.Cell[i]))
+                    {
+                        tempLine = row.Cell[i];
+                    }
+                    Console.WriteLine(column + " : " + tempLine);
                 }
             }
         }
