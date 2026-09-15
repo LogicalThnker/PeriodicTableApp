@@ -1,4 +1,5 @@
 ﻿using PeriodicTableConsoleApp.ClassLib;
+using PeriodicTableConsoleApp.Data;
 
 namespace PeriodicTableConsoleApp.Entry
 {
@@ -6,11 +7,9 @@ namespace PeriodicTableConsoleApp.Entry
     {
         static void Main(string[] args)
         {
-            //ExampleOutput();
-        }
-        public static void ExampleOutput()
-        {
-            //Element hydrogen = PeriodicTable.Get("H");
+            JSON json = new JSON();
+            json.ReadJsonData();
+            json.OutputAllData();
         }
     }
 }
