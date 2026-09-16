@@ -1,5 +1,9 @@
 ﻿namespace PeriodicTableConsoleApp.ClassLib
 {
+    public class PeriodicTableList
+    {
+        public Element[]? elements;
+    }
     public class Element
     {
         public required int AtomicNumber { get; init; }
@@ -18,7 +22,7 @@
         public double? BoilingPoint { get; init; }
         public double? Density { get; init; }
         public string? GroupBlock { get; init; }//ElementType
-        public int? YearDiscovered { get; init; }
+        public string? YearDiscovered { get; init; }
     }
     public class ElementTypes
     {
