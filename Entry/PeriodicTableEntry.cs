@@ -11,14 +11,23 @@ namespace PeriodicTableConsoleApp.Entry
             if (File.Exists(dir))
             {
                 Console.WriteLine("File exists");
+                PubChemJSON json = new PubChemJSON();
+                json.WriteFromMemoryToFile();
+                json.PopulateIsotopeBuckets();
+                json.AddIsotopes();
+                json.WriteIsotopesAddedList();
             }
             else
             {
+                Console.WriteLine("File does NOT exist");
+                Console.WriteLine(" - Creating file now...");
                 PubChemJSON json = new PubChemJSON();
                 json.WriteFromMemoryToFile();
-                Console.WriteLine("File does NOT exist");
+                json.PopulateIsotopeBuckets();
+                json.AddIsotopes();
+                json.WriteIsotopesAddedList();
             }
-            
+
         }
     }
 }

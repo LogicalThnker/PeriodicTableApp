@@ -1,17 +1,21 @@
 ﻿using PeriodicTableConsoleApp.Data;
 using Newtonsoft.Json;
 using PeriodicTableConsoleApp.ClassLib;
+using System.Data;
 
 namespace PeriodicTableConsoleApp.Data
 {
     public class PubChemJSON
     {
-        private string jsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Assets\PubchemJSON.json";
+        private string pubChemJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Assets\PubChemElements_all.json";
+        private string nuDatJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Assets\nndc_nudat_data_export.json";
+        private string periodicTableJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Data\PeriodicTable.json";
         public PubChemData? Data;
-        public PeriodicTableList? InMemoryList;
+        public PeriodicTableList? InMemoryList, IsotopeAddedList;
+        public IsotopeList? isotopeList;
         public void ReadJsonData()
         {
-            string json = File.ReadAllText(jsonDir);
+            string json = File.ReadAllText(pubChemJsonDir);
             Data = JsonConvert.DeserializeObject<PubChemData>(json);
         }
 
@@ -23,11 +27,9 @@ namespace PeriodicTableConsoleApp.Data
             {
                 outputPeriodicTable.elements = new Element[Data.Table.Row.Count];
             }
-            
             Element element;
             if(Data != null)
             {
-                
                 foreach(PubChemRow row in Data.Table.Row)
                 {
                     element = new Element
@@ -85,13 +87,84 @@ namespace PeriodicTableConsoleApp.Data
                 string outputJson = JsonConvert.SerializeObject(
                     InMemoryList, Formatting.Indented);
                 File.WriteAllText(
-                    @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Data\PeriodicTable.json",
+                    periodicTableJsonDir,
                     outputJson);
             }
             else
             {
                 Console.WriteLine("In Memory List is null.");
             }
+        }
+        public void WriteIsotopesAddedList()
+        {
+            if (IsotopeAddedList != null)
+            {
+                string outputJson = JsonConvert.SerializeObject(
+                    IsotopeAddedList, Formatting.Indented);
+                File.WriteAllText(
+                    periodicTableJsonDir,
+                    outputJson);
+            }
+        }
+        public void AddIsotopes()
+        {
+            // if both the json for the pre-isotope layer (or the post one), and the nudat json import with isotopes exists.
+            if (File.Exists(periodicTableJsonDir) && File.Exists(nuDatJsonDir))
+            {
+                Console.WriteLine("Periodic Table Json Exists.");
+                Console.WriteLine("Nudat Json Exists.");
+                string json = File.ReadAllText(periodicTableJsonDir);
+                IsotopeAddedList = JsonConvert.DeserializeObject<PeriodicTableList>(json);
+                int elementCounter = 1;
+                if (IsotopeAddedList != null)
+                {
+                    foreach (Element element in IsotopeAddedList.elements)
+                    {
+                        Console.WriteLine(elementCounter + " : " + element.Name);
+                        element.Isotopes = isotopeList.IsotopeBuckets[element.AtomicNumber].ToArray();
+                        elementCounter++;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("IsotopeAddedList == null");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Neither Periodic Table or Nudat Json exists. Or just one doesn't.");
+            }
+        }
+
+        public void PopulateIsotopeBuckets()
+        {
+            string json = File.ReadAllText(nuDatJsonDir);
+            Dictionary<string, Isotope>? isotopeRawData =
+                JsonConvert.DeserializeObject<Dictionary<string, Isotope>>(json);
+            isotopeList = new IsotopeList
+            {
+                IsotopeBuckets = new Dictionary<int, List<Isotope>>()
+            };
+
+            if (isotopeList != null && isotopeRawData != null)
+            {
+                foreach (Isotope isotope in isotopeRawData.Values)
+                {
+                    int atomicNumber = isotope.z;
+                    if (atomicNumber < 1)
+                        continue;
+                    if (!isotopeList.IsotopeBuckets.ContainsKey(atomicNumber))
+                    {
+                        isotopeList.IsotopeBuckets[atomicNumber] = new List<Isotope>();
+                    }
+                    isotopeList.IsotopeBuckets[atomicNumber].Add(isotope);
+                }
+            }
+            else
+            {
+                Console.WriteLine("IsotopeList == null");
+            }
+            
         }
     }
 }
