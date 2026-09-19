@@ -39,7 +39,7 @@ namespace PeriodicTableConsoleApp.Data
                         pcJSON = await response.Content.ReadAsStringAsync();
                         pcData = JsonConvert.DeserializeObject<PubChemData>(pcJSON);
                         string pcJsonOutput = pcJSON;
-                        System.IO.File.WriteAllText(pubChemJsonDir, pcJsonOutput);
+                        File.WriteAllText(pubChemJsonDir, pcJsonOutput);
                         Console.WriteLine("PubChemJson.json created");
                     }
                     else
@@ -58,7 +58,7 @@ namespace PeriodicTableConsoleApp.Data
             {
                 while (pcData == null && attempts < maxAttempts)
                 {
-                    pcJSON = System.IO.File.ReadAllText(pubChemJsonDir);
+                    pcJSON = File.ReadAllText(pubChemJsonDir);
                     pcData = JsonConvert.DeserializeObject<PubChemData>(pcJSON);
                     attempts++;
                 }
@@ -78,7 +78,7 @@ namespace PeriodicTableConsoleApp.Data
                         ndJSON = await response.Content.ReadAsStringAsync();
                         isotopeRawData = JsonConvert.DeserializeObject<NuDatData>(ndJSON);
                         string ndJsonOutput = ndJSON;
-                        System.IO.File.WriteAllText(nuDatJsonDir, ndJsonOutput);
+                        File.WriteAllText(nuDatJsonDir, ndJsonOutput);
                         Console.WriteLine("NuDatJson.json created.");
                     }
                     else
@@ -96,7 +96,7 @@ namespace PeriodicTableConsoleApp.Data
             {
                 while(ndData == null && attempts < maxAttempts)
                 {
-                    ndJSON = System.IO.File.ReadAllText(nuDatJsonDir);
+                    ndJSON = File.ReadAllText(nuDatJsonDir);
                     isotopeRawData = JsonConvert.DeserializeObject<NuDatData>(ndJSON);
                     attempts++;
                 }
@@ -116,7 +116,7 @@ namespace PeriodicTableConsoleApp.Data
                     string outputJson = JsonConvert.SerializeObject(
                         InMemoryList,
                         Formatting.Indented);
-                    System.IO.File.WriteAllText(
+                    File.WriteAllText(
                         periodicTableJsonDir,
                         outputJson);
                 }catch(Exception e)
@@ -216,7 +216,7 @@ namespace PeriodicTableConsoleApp.Data
                     {
                         string outputJson = JsonConvert.SerializeObject(
                             InMemoryList, Formatting.Indented);
-                        System.IO.File.WriteAllText(
+                        File.WriteAllText(
                             periodicTableJsonDir,
                             outputJson);
                     }
@@ -310,7 +310,7 @@ namespace PeriodicTableConsoleApp.Data
                             {
                                 NullValueHandling = NullValueHandling.Ignore
                             });
-                        System.IO.File.WriteAllText(
+                        File.WriteAllText(
                             periodicTableJsonDir,
                             outputJson);
                     }
