@@ -1,33 +1,38 @@
 ﻿using PeriodicTableConsoleApp.ClassLib;
 using PeriodicTableConsoleApp.Data;
+using System.Threading.Tasks;
+using System.Net.Http;
+using System.IO;
 
 namespace PeriodicTableConsoleApp.Entry
 {
     public class PeriodicTableEntry
     {
         static private string dir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Data\PeriodicTable.json";
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
+            PubChemJSON json = new PubChemJSON();
+            json.allDebug = true;
+            json.NuDatBool = true;
+            json.PubChemBool = true;
+            json.NeedsUpdate = false;
             if (File.Exists(dir))
             {
-                Console.WriteLine("File exists");
-                PubChemJSON json = new PubChemJSON();
-                json.WriteFromMemoryToFile();
-                json.PopulateIsotopeBuckets();
-                json.AddIsotopes();
-                json.WriteIsotopesAddedList();
+                if (json.NeedsUpdate)
+                {
+                    Console.WriteLine("File Does Exist, Updating.");
+                    await json.PutTogether();
+                }
+                else if (!json.NeedsUpdate)
+                {
+                    Console.WriteLine("File Does Exist.");
+                }
             }
-            else
+            else if(!File.Exists(dir))
             {
-                Console.WriteLine("File does NOT exist");
-                Console.WriteLine(" - Creating file now...");
-                PubChemJSON json = new PubChemJSON();
-                json.WriteFromMemoryToFile();
-                json.PopulateIsotopeBuckets();
-                json.AddIsotopes();
-                json.WriteIsotopesAddedList();
+                Console.WriteLine("File Doesn't Exist.");
+                await json.PutTogether();
             }
-
         }
     }
 }
