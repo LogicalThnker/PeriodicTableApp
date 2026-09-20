@@ -20,24 +20,23 @@ namespace PeriodicTableConsoleApp.ClassLib
         public required int a { get; init; }//Isotope
         public Levels[]? levels { get; init; }
         public Extras? bindingEnergy { get; init; }
-        public Extras? neutronSeparationEnergy { get; init; }
-        public Extras? protonSeparationEnergy { get; init; }
-        public Extras? twoNeutronSeparationEnergy { get; init; }
-        public Extras? twoProtonSeparationEnergy { get; init; }
+        public SeparationEnergies? separationEnergies { get; init; }
+        public QValues? qValues { get; init; }
+        public Extras? pairingGap { get; init; }
+    }
+    public class QValues
+    {
         public Extras? alpha { get; init; }
         public Extras? betaMinus { get; init; }
         public Extras? electronCapture { get; init; }
         public Extras? positronEmission { get; init; }
-        public Extras? pairingGap { get; init; }
-
-        public Extras? FY235U { get; init; }
-        public Extras? FY239Pu { get; init; }
-        public Extras? FY252Cf { get; init; }
-        public Extras? FY238U { get; init; }
-        public Extras? cFY235U { get; init; }
-        public Extras? cFY239Pu { get; init; }
-        public Extras? cFY252Cf { get; init; }
-        public Extras? cFY238U { get; init; }
+    }
+    public class SeparationEnergies
+    {
+        public Extras? neutronSeparationEnergy { get; init; }
+        public Extras? protonSeparationEnergy { get; init; }
+        public Extras? twoNeutronSeparationEnergy { get; init; }
+        public Extras? twoProtonSeparationEnergy { get; init; }
     }
     public class Levels
     {

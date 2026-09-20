@@ -13,12 +13,12 @@ namespace PeriodicTableConsoleApp.Data
     public class PubChemJSON
     {
         private string? pcJSON, ndJSON;
-        private readonly string periodicTableJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Data\PeriodicTable.json";
-        private readonly string pubChemJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Debug\PubChemJson.json";
-        private readonly string nuDatJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Debug\NuDatJson.json";
+        private readonly string periodicTableJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Assets\PeriodicTable.json";
+        private readonly string pubChemJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Assets\PubChemJson.json";
+        private readonly string nuDatJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Assets\NuDatJson.json";
         public PubChemData? pcData;
         public IsotopeList? ndData;
-        public PeriodicTableList? InMemoryList, IsotopeAddedList;
+        public PeriodicTableList? InMemoryList;
         public NuDatData? isotopeRawData;
 
         public bool allDebug = false;
@@ -70,7 +70,7 @@ namespace PeriodicTableConsoleApp.Data
             int maxAttempts = 1;
             if (!allDebug)
             {
-                while (ndData == null && attempts < maxAttempts)
+                while (isotopeRawData == null && attempts < maxAttempts)
                 {
                     HttpResponseMessage response = await client.GetAsync("https://www.nndc.bnl.gov/nudat3/data/output.json");
                     if (response.IsSuccessStatusCode)
@@ -110,20 +110,12 @@ namespace PeriodicTableConsoleApp.Data
                 await GetPubChemData();
                 await GetNuDatData();
                 await InMemoryListPopulate(NuDatBool, PubChemBool);
-
-                try
-                {
-                    string outputJson = JsonConvert.SerializeObject(
-                        InMemoryList,
-                        Formatting.Indented);
-                    File.WriteAllText(
-                        periodicTableJsonDir,
-                        outputJson);
-                }catch(Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
             }
+        }
+
+        public void DumpAllData()
+        {
+            
         }
 
         private async Task InMemoryListPopulate(bool NuDatB, bool PubChemB)
@@ -133,7 +125,6 @@ namespace PeriodicTableConsoleApp.Data
                 await PubChemReadIntoMemory();
                 await PopulateIsotopeBuckets();
                 await AddIsotopes();
-                await WriteIsotopesAddedList();
                 await WriteFromMemoryToFile();
                 Console.WriteLine("Tasks are 'done'");
             }
@@ -215,7 +206,11 @@ namespace PeriodicTableConsoleApp.Data
                     if (InMemoryList != null && InMemoryList.elements != null)
                     {
                         string outputJson = JsonConvert.SerializeObject(
-                            InMemoryList, Formatting.Indented);
+                            InMemoryList, Formatting.Indented,
+                            new JsonSerializerSettings
+                            {
+                                NullValueHandling = NullValueHandling.Ignore
+                            });
                         File.WriteAllText(
                             periodicTableJsonDir,
                             outputJson);
@@ -277,42 +272,19 @@ namespace PeriodicTableConsoleApp.Data
                     {
                         if (InMemoryList != null)
                         {
-                            Console.WriteLine("IsotopeAddedList != null");
+                            foreach(Element element in InMemoryList.elements)
+                            {
+                                element.Isotopes = ndData.IsotopeBuckets[element.AtomicNumber].ToArray();
+                            }
                         }
                         else
                         {
-                            Console.WriteLine("IsotopeAddedList == null");
+                            Console.WriteLine("InMemoryList or IsotopeBuckets == null");
                         }
                     }
                     else
                     {
                         Console.WriteLine("Neither Periodic Table or Nudat Json exists. Or just one doesn't.");
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
-            });
-        }
-        public async Task WriteIsotopesAddedList()
-        {
-            await Task.Run(() =>
-            {
-                try
-                {
-                    if (IsotopeAddedList != null)
-                    {
-                        string outputJson = JsonConvert.SerializeObject(
-                            IsotopeAddedList,
-                            Formatting.Indented,
-                            new JsonSerializerSettings
-                            {
-                                NullValueHandling = NullValueHandling.Ignore
-                            });
-                        File.WriteAllText(
-                            periodicTableJsonDir,
-                            outputJson);
                     }
                 }
                 catch (Exception e)
