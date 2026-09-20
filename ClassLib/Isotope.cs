@@ -23,6 +23,7 @@ namespace PeriodicTableConsoleApp.ClassLib
         public SeparationEnergies? separationEnergies { get; init; }
         public QValues? qValues { get; init; }
         public Extras? pairingGap { get; init; }
+        public FissionYields? fissionYields { get; init; }
     }
     public class QValues
     {
@@ -37,6 +38,17 @@ namespace PeriodicTableConsoleApp.ClassLib
         public Extras? protonSeparationEnergy { get; init; }
         public Extras? twoNeutronSeparationEnergy { get; init; }
         public Extras? twoProtonSeparationEnergy { get; init; }
+    }
+    public class FissionYields
+    {
+        public Extras? FY235U { get; init; }
+        public Extras? FY239Pu { get; init; }
+        public Extras? FY252Cf { get; init; }
+        public Extras? FY238U { get; init; }
+        public Extras? cFY235U { get; init; }
+        public Extras? cFY239Pu { get; init; }
+        public Extras? cFY252Cf { get; init; }
+        public Extras? cFY238U { get; init; }
     }
     public class Levels
     {
