@@ -26,6 +26,7 @@ namespace PeriodicTableConsoleApp.Entry
                 else if (!json.NeedsUpdate)
                 {
                     Console.WriteLine("File Does Exist.");
+                    //json.DumpAllData();
 
                 }
             }

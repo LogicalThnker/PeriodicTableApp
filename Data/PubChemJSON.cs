@@ -22,9 +22,10 @@ namespace PeriodicTableConsoleApp.Data
         public NuDatData? isotopeRawData;
 
         public bool allDebug = false;
-        
         public bool NuDatBool, PubChemBool, NeedsUpdate;
+
         private readonly HttpClient client = new HttpClient();
+
         public async Task GetPubChemData()
         {
             int attempts = 0;
@@ -102,7 +103,6 @@ namespace PeriodicTableConsoleApp.Data
                 }
             }
         }
-
         public async Task PutTogether()
         {
             if (NuDatBool && PubChemBool)
@@ -112,10 +112,12 @@ namespace PeriodicTableConsoleApp.Data
                 await InMemoryListPopulate(NuDatBool, PubChemBool);
             }
         }
-
         public void DumpAllData()
         {
-            
+            foreach (string line in File.ReadLines(periodicTableJsonDir))
+            {
+                Console.WriteLine(line);
+            }
         }
 
         private async Task InMemoryListPopulate(bool NuDatB, bool PubChemB)
@@ -129,7 +131,6 @@ namespace PeriodicTableConsoleApp.Data
                 Console.WriteLine("Tasks are 'done'");
             }
         }
-
         public async Task PubChemReadIntoMemory()
         {
             await Task.Run(() => {
@@ -196,7 +197,6 @@ namespace PeriodicTableConsoleApp.Data
             });
             
         }
-
         public async Task WriteFromMemoryToFile()
         {
             await Task.Run(() =>
