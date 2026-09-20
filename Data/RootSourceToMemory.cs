@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PeriodicTableConsoleApp.Data
 {
-    public class PubChemJSON
+    public class RootSourceToMemory
     {
         private string? pcJSON, ndJSON;
         private readonly string periodicTableJsonDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Assets\PeriodicTable.json";
@@ -111,6 +111,8 @@ namespace PeriodicTableConsoleApp.Data
                 await GetNuDatData();
                 await InMemoryListPopulate(NuDatBool, PubChemBool);
             }
+            // when future input databases exist, can add to this.
+            // could even do a switch maybe, unsure.
         }
         public void DumpAllData()
         {
@@ -293,5 +295,7 @@ namespace PeriodicTableConsoleApp.Data
                 }
             });
         }
+
+
     }
 }

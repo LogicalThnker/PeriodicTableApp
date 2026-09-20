@@ -1,5 +1,4 @@
-﻿using PeriodicTableConsoleApp.ClassLib;
-using PeriodicTableConsoleApp.Data;
+﻿using PeriodicTableConsoleApp.Data;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.IO;
@@ -11,7 +10,8 @@ namespace PeriodicTableConsoleApp.Entry
         static private string PeriodicTableDir = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Assets\PeriodicTable.json";
         static async Task Main(string[] args)
         {
-            PubChemJSON json = new PubChemJSON();
+            EndFHandler handler = new EndFHandler();
+            RootSourceToMemory json = new RootSourceToMemory();
             json.allDebug = true;
             json.NuDatBool = true;
             json.PubChemBool = true;
@@ -26,8 +26,9 @@ namespace PeriodicTableConsoleApp.Entry
                 else if (!json.NeedsUpdate)
                 {
                     Console.WriteLine("File Does Exist.");
-                    //json.DumpAllData();
-
+                    await handler.DownloadZips();
+                    handler.ExtractZips();
+                    //json.DumpAllData();// For debug purposes. only runs if file doesn't need update, and does exist.
                 }
             }
             else if(!File.Exists(PeriodicTableDir))
