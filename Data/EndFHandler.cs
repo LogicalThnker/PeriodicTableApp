@@ -22,6 +22,9 @@ namespace PeriodicTableConsoleApp.Data
         private readonly string ProtonEndFPath = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Data\EndF\Proton\";
         private readonly string DeuteronEndFPath = @"G:\VS Project Dir\CS\PeriodicTableConsoleApp\Data\EndF\Deuteron\";
 
+        public long NumberOfFiles, NumberOfLines, NumberOfChars;
+
+        // --- Download/Unzip stuff --- START --- //
         public async Task DownloadZips()
         {
             using HttpClient client = new HttpClient();
@@ -70,10 +73,34 @@ namespace PeriodicTableConsoleApp.Data
             }
         }
 
-        private bool EndfFFileExists(string path)
+        public bool EndfFFileExists(string path)
         {
             return Directory.EnumerateFiles(
                 path, "*.endf", SearchOption.AllDirectories).Any();
+        }
+        // --- Download/Unzip stuff --- END --- //
+
+        public void ConvertInputToOutputFormat(string inputPath)
+        {
+            // Input = RawInputData.endf
+            // Output = EndFModelxxx.json
+            int numberOfFiles = 0;
+            int numberOfLines = 0;
+            int numberOfChars = 0;
+            IEnumerable<string> files =
+                Directory.EnumerateFiles(inputPath, "*.endf");
+            foreach (string file in files)
+            {
+                foreach (string line in File.ReadLines(file))
+                {
+                    numberOfLines++;
+                    numberOfChars += line.Length;
+                }
+                numberOfFiles++;
+            }
+            NumberOfFiles += numberOfFiles;
+            NumberOfLines += numberOfLines;
+            NumberOfChars += numberOfChars;
         }
 
     }
