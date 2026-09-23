@@ -5,6 +5,7 @@ using System.Text;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace PeriodicTableConsoleApp.Data
 {
